@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Name to Hex</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: #f5f5f5;
+      gap: 24px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      color: #333;
+    }
+
+    input {
+      padding: 12px 16px;
+      font-size: 1rem;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      width: 280px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #555;
+    }
+
+    #swatch {
+      width: 160px;
+      height: 160px;
+      border-radius: 12px;
+      background: #ccc;
+      transition: background 0.3s;
+    }
+
+    #hex-label {
+      font-size: 1.4rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Name to Hex Color</h1>
+  <input type="text" id="name-input" placeholder="Enter a name..." />
+  <div id="swatch"></div>
+  <span id="hex-label">#------</span>
+
+  <script>
+    function nameToHex(name) {
+      let hash = 0;
+      for (let i = 0; i < name.length; i++) {
+        hash = name.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const color = (hash & 0x00ffffff).toString(16).toUpperCase();
+      return "#" + color.padStart(6, "0");
+    }
+
+    const input = document.getElementById("name-input");
+    const swatch = document.getElementById("swatch");
+    const label = document.getElementById("hex-label");
+
+    input.addEventListener("input", () => {
+      if (input.value.trim() === "") {
+        swatch.style.background = "#ccc";
+        label.textContent = "#------";
+        return;
+      }
+      const hex = nameToHex(input.value.trim());
+      swatch.style.background = hex;
+      label.textContent = hex;
+    });
+  </script>
+</body>
+</html>
